@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const StudentForm = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +9,7 @@ const StudentForm = () => {
     subject2: '',
     subject3: ''
   });
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -47,21 +48,28 @@ const StudentForm = () => {
   };
 
   return (
-    <form className="form" onSubmit={handleSubmit}>
+    <div className="form-container">
       <h2>Student Data</h2>
-      {['name', 'roll', 'subject1', 'subject2', 'subject3'].map(field => (
-        <input
-          key={field}
-          type="text"
-          name={field}
-          placeholder={field === 'roll' ? 'USN' : field.toUpperCase()}
-          value={formData[field]}
-          onChange={handleChange}
-          required
-        />
-      ))}
-      <button type="submit">Add Student</button>
-    </form>
+
+      <form className="form" onSubmit={handleSubmit}>
+        {['name', 'roll', 'subject1', 'subject2', 'subject3'].map(field => (
+          <input
+            key={field}
+            type="text"
+            name={field}
+            placeholder={field === 'roll' ? 'USN' : field.toUpperCase()}
+            value={formData[field]}
+            onChange={handleChange}
+            required
+          />
+        ))}
+
+        <div className="form-actions">
+          <button type="submit">Add Student</button>
+          <Link to="/list" className="nav-link right-link">Go to Students List</Link>
+        </div>
+      </form>
+    </div>
   );
 };
 

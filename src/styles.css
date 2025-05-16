@@ -1,58 +1,72 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f5f7fa;
+  background-color: #f4f6f9;
   margin: 0;
   padding: 0;
+  color: #333;
+  line-height: 1.6;
 }
 
 h2 {
   text-align: center;
-  margin-bottom: 20px;
-  color: #333;
+  margin-bottom: 30px;
+  font-size: 30px;
+  color: #1a1a1a;
 }
 
-.form, .list {
+.form,
+.list {
   max-width: 900px;
   margin: 40px auto;
-  background: #ffffff;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  border: 1px solid #ddd; /* Border added to both form and list */
+  background: #fff;
+  padding: 40px 35px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e1e4e8;
 }
 
 .form {
-  margin-bottom: 40px; /* Space between form and table */
+  margin-bottom: 60px;
 }
 
-.form input, .list input[type="text"] {
+.form input,
+.list input[type="text"] {
   display: block;
   width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  border: 1px solid #ccd0d5;
+  border-radius: 6px;
   font-size: 16px;
+  background-color: #fafbfc;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form input:focus,
+.list input[type="text"]:focus {
+  border-color: #1976d2;
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+  outline: none;
 }
 
 button {
-  padding: 10px 20px;
-  margin-right: 10px;
+  padding: 12px 24px;
   background-color: #1976d2;
   color: #fff;
   border: none;
-  border-radius: 4px;
-  font-weight: bold;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 15px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 button:hover:not(:disabled) {
-  background-color: #135ca8;
+  background-color: #145cb0;
 }
 
 button:disabled {
-  background-color: #ccc;
+  background-color: #cfd8dc;
   cursor: not-allowed;
 }
 
@@ -60,36 +74,41 @@ button:disabled {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  margin-bottom: 15px;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .controls button {
+  flex: 1;
+  min-width: 150px;
   margin: 5px 0;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 15px;
+  margin-top: 20px;
+  background-color: #fff;
 }
 
 thead {
   background-color: #1976d2;
-  color: white;
+  color: #fff;
 }
 
 th, td {
   text-align: left;
-  padding: 12px;
+  padding: 14px;
   border-bottom: 1px solid #e0e0e0;
 }
 
 tr:hover {
-  background-color: #f1f1f1;
+  background-color: #f5faff;
 }
 
 input[type="checkbox"] {
   transform: scale(1.2);
+  cursor: pointer;
 }
 
 .dots-menu-wrapper {
@@ -100,18 +119,21 @@ input[type="checkbox"] {
 .dots-menu {
   cursor: pointer;
   font-size: 20px;
-  padding: 4px 8px;
+  padding: 6px 10px;
   user-select: none;
+  color: #555;
 }
 
 .menu {
   position: absolute;
   right: 0;
+  top: 100%;
   background: white;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 6px;
   z-index: 1000;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  min-width: 140px;
 }
 
 .menu button {
@@ -119,33 +141,76 @@ input[type="checkbox"] {
   width: 100%;
   background: none;
   color: #333;
-  padding: 10px 20px;
+  padding: 12px 18px;
   text-align: left;
   border: none;
+  font-size: 15px;
   border-bottom: 1px solid #eee;
+  transition: background-color 0.3s;
 }
 
 .menu button:hover {
   background-color: #f0f0f0;
 }
 
+.nav-link {
+  display: inline-block;
+  color: #1976d2;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+  color: #0d5fb2;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.form-actions .nav-link.right-link {
+  margin: 0;
+}
+
 @media (max-width: 768px) {
-  .form, .list {
+  .form,
+  .list {
     margin: 20px;
-    padding: 20px;
+    padding: 25px;
   }
 
   .controls {
     flex-direction: column;
-    gap: 10px;
+    align-items: stretch;
   }
 
-  th, td {
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  th,
+  td {
     font-size: 14px;
+    padding: 10px;
   }
 
   .menu {
     right: auto;
     left: 0;
+  }
+
+  button,
+  .nav-link {
+    width: 100%;
+    text-align: center;
   }
 }
