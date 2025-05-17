@@ -23,7 +23,7 @@ const StudentForm = () => {
     let grade = 'Fail';
     if (avg >= 85) grade = 'A';
     else if (avg >= 70) grade = 'B';
-    else if (avg >= 40) grade = 'C';
+    else if (avg >= 50) grade = 'C';
     return { total, avg, grade };
   };
 

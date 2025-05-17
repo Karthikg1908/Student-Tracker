@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import StudentRow from './StudentRow';
 
 const StudentList = () => {
   const [students, setStudents] = useState([]);
   const [search, setSearch] = useState('');
-  const [sortField, setSortField] = useState('name');
   const [selected, setSelected] = useState([]);
 
   useEffect(() => {
@@ -12,7 +11,9 @@ const StudentList = () => {
     setStudents(stored);
   }, []);
 
-  const handleSearch = (e) => setSearch(e.target.value);
+  const filteredStudents = useMemo(() => {
+    return students.filter(s => s.name.toLowerCase().includes(search.toLowerCase()));
+  }, [students, search]);
 
   const handleDelete = (id) => {
     const filtered = students.filter(s => s.id !== id);
@@ -24,16 +25,6 @@ const StudentList = () => {
     const updated = students.map(s => s.id === id ? updatedData : s);
     setStudents(updated);
     localStorage.setItem('students', JSON.stringify(updated));
-  };
-
-  const handleSort = (field) => {
-    setSortField(field);
-    const sorted = [...students].sort((a, b) => {
-      return field === 'name'
-        ? a.name.localeCompare(b.name)
-        : b.total - a.total;
-    });
-    setStudents(sorted);
   };
 
   const handleCheck = (id) => {
@@ -59,12 +50,10 @@ const StudentList = () => {
       <input
         type="text"
         placeholder="Search by name..."
-        onChange={handleSearch}
+        onChange={(e) => setSearch(e.target.value)}
         value={search}
       />
       <div className="controls">
-        <button onClick={() => handleSort('name')}>Sort by Name</button>
-        <button onClick={() => handleSort('total')}>Sort by Total</button>
         <button onClick={deleteSelected} disabled={!selected.length}>Delete Selected</button>
       </div>
       <table>
@@ -76,18 +65,16 @@ const StudentList = () => {
           </tr>
         </thead>
         <tbody>
-          {students
-            .filter(s => s.name.toLowerCase().includes(search.toLowerCase()))
-            .map(student => (
-              <StudentRow
-                key={student.id}
-                student={student}
-                selected={selected.includes(student.id)}
-                onCheck={handleCheck}
-                onDelete={handleDelete}
-                onEdit={handleEdit}
-              />
-            ))}
+          {filteredStudents.map(student => (
+            <StudentRow
+              key={student.id}
+              student={student}
+              selected={selected.includes(student.id)}
+              onCheck={handleCheck}
+              onDelete={handleDelete}
+              onEdit={handleEdit}
+            />
+          ))}
         </tbody>
       </table>
     </div>

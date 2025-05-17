@@ -4,7 +4,6 @@ const ThreeDotsMenu = ({ onEdit, onDelete, onSave, isEditing }) => {
   const [open, setOpen] = useState(false);
   const menuRef = useRef();
 
-  // Close menu if clicked outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
