@@ -58,7 +58,6 @@ const StudentList = () => {
     setSelected(e.target.checked ? students.map(s => s.id) : []);
   };
 
-  // Function to generate CSV
   const generateCSV = () => {
     const header = ['Name', 'Roll', 'Subject 1', 'Subject 2', 'Subject 3', 'Total', 'Average', 'Grade'];
     const rows = filteredStudents.map(student => [
@@ -77,11 +76,9 @@ const StudentList = () => {
       ...rows.map(row => row.join(','))
     ].join('\n');
 
-    // Create a blob and trigger a download
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     if (link.download !== undefined) {
-      // Create a link to download the CSV
       const url = URL.createObjectURL(blob);
       link.setAttribute('href', url);
       link.setAttribute('download', 'students.csv');
@@ -94,7 +91,7 @@ const StudentList = () => {
       <div className="list-header">
         <h2>Student List</h2>
         <button onClick={() => navigate('/')} className="add-button">Add Student</button>
-        <button onClick={generateCSV} className="csv-button">Download CSV</button> {/* Add CSV download button */}
+        <button onClick={generateCSV} className="csv-button">Download CSV</button>
       </div>
 
       <div className="top-controls">

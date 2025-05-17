@@ -51,7 +51,6 @@ const StudentForm = () => {
     stored.push(newStudent);
     localStorage.setItem('students', JSON.stringify(stored));
 
-    // ✅ Show success alert and navigate after "OK"
     alert("✅ Student added successfully!");
     navigate('/list');
   };

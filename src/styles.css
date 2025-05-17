@@ -1,4 +1,3 @@
-/* Base Layout */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f0f2f5;
@@ -16,7 +15,6 @@ h2 {
   color: #1a1a1a;
 }
 
-/* Containers */
 .form,
 .list {
   max-width: 960px;
@@ -33,7 +31,6 @@ h2 {
   margin-bottom: 60px;
 }
 
-/* Input Fields */
 .form input,
 .list input[type="text"],
 .list select {
@@ -56,7 +53,6 @@ h2 {
   outline: none;
 }
 
-/* Buttons */
 button {
   padding: 12px 24px;
   background-color: #1976d2;
@@ -78,7 +74,6 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* Download CSV Button */
 .csv-button {
   padding: 12px 24px;
   background-color: #007bff;
@@ -101,7 +96,6 @@ button:disabled {
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.3);
 }
 
-/* Table & Controls */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -131,7 +125,6 @@ input[type="checkbox"] {
   cursor: pointer;
 }
 
-/* Three Dots Menu */
 .dots-menu-wrapper {
   position: relative;
   display: inline-block;
@@ -187,7 +180,6 @@ input[type="checkbox"] {
   }
 }
 
-/* Top Controls */
 .top-controls {
   display: flex;
   justify-content: space-between;
@@ -207,7 +199,6 @@ input[type="checkbox"] {
   min-width: 160px;
 }
 
-/* Action Buttons Area */
 .controls,
 .form-actions {
   display: flex;
@@ -241,7 +232,6 @@ input[type="checkbox"] {
   text-align: right;
 }
 
-/* Mobile Responsive */
 @media (max-width: 768px) {
   .form,
   .list {
