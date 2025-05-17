@@ -5,6 +5,7 @@ const StudentList = () => {
   const [students, setStudents] = useState([]);
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState([]);
+  const [sortOption, setSortOption] = useState(''); // 'name' or 'marks'
 
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem('students')) || [];
@@ -12,8 +13,18 @@ const StudentList = () => {
   }, []);
 
   const filteredStudents = useMemo(() => {
-    return students.filter(s => s.name.toLowerCase().includes(search.toLowerCase()));
-  }, [students, search]);
+    let result = [...students].filter(s =>
+      s.name.toLowerCase().includes(search.toLowerCase())
+    );
+
+    if (sortOption === 'name') {
+      result.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortOption === 'marks') {
+      result.sort((a, b) => b.total - a.total); // descending by marks
+    }
+
+    return result;
+  }, [students, search, sortOption]);
 
   const handleDelete = (id) => {
     const filtered = students.filter(s => s.id !== id);
@@ -47,19 +58,37 @@ const StudentList = () => {
   return (
     <div className="list">
       <h2>Student List</h2>
-      <input
-        type="text"
-        placeholder="Search by name..."
-        onChange={(e) => setSearch(e.target.value)}
-        value={search}
-      />
-      <div className="controls">
+
+      <div className="top-controls">
+        <input
+          type="text"
+          placeholder="Search by name..."
+          onChange={(e) => setSearch(e.target.value)}
+          value={search}
+        />
+
+        <div className="sort-controls">
+          <label>Sort by: </label>
+          <select value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+            <option value="">None</option>
+            <option value="name">Name (A-Z)</option>
+            <option value="marks">Marks (High to Low)</option>
+          </select>
+        </div>
+
         <button onClick={deleteSelected} disabled={!selected.length}>Delete Selected</button>
       </div>
+
       <table>
         <thead>
           <tr>
-            <th><input type="checkbox" onChange={handleSelectAll} checked={selected.length === students.length} /></th>
+            <th>
+              <input
+                type="checkbox"
+                onChange={handleSelectAll}
+                checked={selected.length === students.length && students.length > 0}
+              />
+            </th>
             <th>Name</th><th>Roll</th><th>Subjects</th>
             <th>Total</th><th>Average</th><th>Grade</th><th>Actions</th>
           </tr>

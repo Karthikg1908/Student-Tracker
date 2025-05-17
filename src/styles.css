@@ -1,6 +1,7 @@
+/* Base Layout */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f4f6f9;
+  background-color: #f0f2f5;
   margin: 0;
   padding: 0;
   color: #333;
@@ -9,52 +10,59 @@ body {
 
 h2 {
   text-align: center;
-  margin-bottom: 30px;
-  font-size: 30px;
+  margin-bottom: 32px;
+  font-size: 32px;
+  font-weight: 600;
   color: #1a1a1a;
 }
 
+/* Containers */
 .form,
 .list {
-  max-width: 900px;
+  max-width: 960px;
   margin: 40px auto;
-  background: #fff;
-  padding: 40px 35px;
+  background: #ffffff;
+  padding: 40px;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e1e4e8;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
 }
 
 .form {
   margin-bottom: 60px;
 }
 
+/* Input Fields */
 .form input,
-.list input[type="text"] {
+.list input[type="text"],
+.list select {
   display: block;
   width: 100%;
   padding: 14px 16px;
   margin-bottom: 20px;
-  border: 1px solid #ccd0d5;
-  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
   font-size: 16px;
-  background-color: #fafbfc;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  background-color: #f9fafb;
+  transition: all 0.2s ease;
 }
 
 .form input:focus,
-.list input[type="text"]:focus {
-  border-color: #1976d2;
-  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+.list input[type="text"]:focus,
+.list select:focus {
+  border-color: #1e88e5;
+  box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.2);
   outline: none;
 }
 
+/* Buttons */
 button {
   padding: 12px 24px;
   background-color: #1976d2;
   color: #fff;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-weight: 600;
   font-size: 15px;
   cursor: pointer;
@@ -62,28 +70,15 @@ button {
 }
 
 button:hover:not(:disabled) {
-  background-color: #145cb0;
+  background-color: #155fa0;
 }
 
 button:disabled {
-  background-color: #cfd8dc;
+  background-color: #d1d9e0;
   cursor: not-allowed;
 }
 
-.controls {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.controls button {
-  flex: 1;
-  min-width: 150px;
-  margin: 5px 0;
-}
-
+/* Table & Controls */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -93,17 +88,19 @@ table {
 
 thead {
   background-color: #1976d2;
-  color: #fff;
+  color: #ffffff;
 }
 
-th, td {
+th,
+td {
   text-align: left;
-  padding: 14px;
+  padding: 14px 12px;
   border-bottom: 1px solid #e0e0e0;
+  font-size: 15px;
 }
 
 tr:hover {
-  background-color: #f5faff;
+  background-color: #f1f9ff;
 }
 
 input[type="checkbox"] {
@@ -111,6 +108,7 @@ input[type="checkbox"] {
   cursor: pointer;
 }
 
+/* Three Dots Menu */
 .dots-menu-wrapper {
   position: relative;
   display: inline-block;
@@ -132,8 +130,10 @@ input[type="checkbox"] {
   border: 1px solid #ccc;
   border-radius: 6px;
   z-index: 1000;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
   min-width: 140px;
+  overflow: hidden;
+  animation: fadeIn 0.2s ease-in-out;
 }
 
 .menu button {
@@ -153,6 +153,53 @@ input[type="checkbox"] {
   background-color: #f0f0f0;
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Top Controls */
+.top-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.sort-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sort-controls select {
+  min-width: 160px;
+}
+
+/* Action Buttons Area */
+.controls,
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.controls button,
+.form-actions button {
+  flex: 1;
+  min-width: 150px;
+}
+
 .nav-link {
   display: inline-block;
   color: #1976d2;
@@ -164,22 +211,14 @@ input[type="checkbox"] {
 
 .nav-link:hover {
   text-decoration: underline;
-  color: #0d5fb2;
+  color: #125ea9;
 }
 
-.form-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-  flex-wrap: wrap;
-  gap: 10px;
+.right-link {
+  text-align: right;
 }
 
-.form-actions .nav-link.right-link {
-  margin: 0;
-}
-
+/* Mobile Responsive */
 @media (max-width: 768px) {
   .form,
   .list {
@@ -187,12 +226,9 @@ input[type="checkbox"] {
     padding: 25px;
   }
 
-  .controls {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .form-actions {
+  .controls,
+  .form-actions,
+  .top-controls {
     flex-direction: column;
     align-items: stretch;
   }
@@ -212,5 +248,9 @@ input[type="checkbox"] {
   .nav-link {
     width: 100%;
     text-align: center;
+  }
+
+  .sort-controls select {
+    width: 100%;
   }
 }
