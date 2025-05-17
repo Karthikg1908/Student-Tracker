@@ -16,6 +16,15 @@ const ThreeDotsMenu = ({ onEdit, onDelete, onSave, isEditing }) => {
     };
   }, []);
 
+  // Function to handle delete confirmation
+  const handleDelete = () => {
+    const confirmation = window.confirm('Are you sure you want to delete this item?');
+    if (confirmation) {
+      onDelete();
+      setOpen(false);
+    }
+  };
+
   return (
     <div className="dots-menu-wrapper" ref={menuRef}>
       <div className="dots-menu" onClick={() => setOpen(prev => !prev)}>
@@ -28,7 +37,7 @@ const ThreeDotsMenu = ({ onEdit, onDelete, onSave, isEditing }) => {
           ) : (
             <button onClick={() => { onEdit(); setOpen(false); }}>Edit</button>
           )}
-          <button onClick={() => { onDelete(); setOpen(false); }}>Delete</button>
+          <button onClick={handleDelete}>Delete</button>
         </div>
       )}
     </div>

@@ -31,6 +31,12 @@ const StudentForm = () => {
     e.preventDefault();
     const { subject1, subject2, subject3 } = formData;
     const s1 = +subject1, s2 = +subject2, s3 = +subject3;
+
+    if ([s1, s2, s3].some(score => score < 0 || score > 100)) {
+      alert("❌ Marks should be between 0 and 100");
+      return;
+    }
+
     const { total, avg, grade } = calculateResults(s1, s2, s3);
 
     const newStudent = {
@@ -44,7 +50,26 @@ const StudentForm = () => {
     const stored = JSON.parse(localStorage.getItem('students')) || [];
     stored.push(newStudent);
     localStorage.setItem('students', JSON.stringify(stored));
+
+    // ✅ Show success alert and navigate after "OK"
+    alert("✅ Student added successfully!");
     navigate('/list');
+  };
+
+  const labels = {
+    name: 'Student Name',
+    roll: 'USN',
+    subject1: 'Subject 1 Marks',
+    subject2: 'Subject 2 Marks',
+    subject3: 'Subject 3 Marks'
+  };
+
+  const placeholderExamples = {
+    name: 'Karthi',
+    roll: '407',
+    subject1: '80',
+    subject2: '75',
+    subject3: '100'
   };
 
   return (
@@ -52,16 +77,20 @@ const StudentForm = () => {
       <h2>Student Data</h2>
 
       <form className="form" onSubmit={handleSubmit}>
-        {['name', 'roll', 'subject1', 'subject2', 'subject3'].map(field => (
-          <input
-            key={field}
-            type="text"
-            name={field}
-            placeholder={field === 'roll' ? 'USN' : field.toUpperCase()}
-            value={formData[field]}
-            onChange={handleChange}
-            required
-          />
+        {Object.keys(formData).map((field) => (
+          <div key={field} className="form-group">
+            <label htmlFor={field}>{labels[field]}</label>
+            <input
+              id={field}
+              name={field}
+              type={field.startsWith('subject') ? 'number' : 'text'}
+              placeholder={placeholderExamples[field]}
+              value={formData[field]}
+              onChange={handleChange}
+              required
+              {...(field.startsWith('subject') ? { min: 0, max: 100 } : {})}
+            />
+          </div>
         ))}
 
         <div className="form-actions">

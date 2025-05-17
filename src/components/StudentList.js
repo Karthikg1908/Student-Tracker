@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import StudentRow from './StudentRow';
 
 const StudentList = () => {
   const [students, setStudents] = useState([]);
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState([]);
-  const [sortOption, setSortOption] = useState(''); // 'name' or 'marks'
+  const [sortOption, setSortOption] = useState('');
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem('students')) || [];
@@ -20,7 +23,7 @@ const StudentList = () => {
     if (sortOption === 'name') {
       result.sort((a, b) => a.name.localeCompare(b.name));
     } else if (sortOption === 'marks') {
-      result.sort((a, b) => b.total - a.total); // descending by marks
+      result.sort((a, b) => b.total - a.total);
     }
 
     return result;
@@ -55,9 +58,44 @@ const StudentList = () => {
     setSelected(e.target.checked ? students.map(s => s.id) : []);
   };
 
+  // Function to generate CSV
+  const generateCSV = () => {
+    const header = ['Name', 'Roll', 'Subject 1', 'Subject 2', 'Subject 3', 'Total', 'Average', 'Grade'];
+    const rows = filteredStudents.map(student => [
+      student.name,
+      student.roll,
+      student.subject1,
+      student.subject2,
+      student.subject3,
+      student.total,
+      student.avg,
+      student.grade
+    ]);
+
+    const csvContent = [
+      header.join(','),
+      ...rows.map(row => row.join(','))
+    ].join('\n');
+
+    // Create a blob and trigger a download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+      // Create a link to download the CSV
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'students.csv');
+      link.click();
+    }
+  };
+
   return (
     <div className="list">
-      <h2>Student List</h2>
+      <div className="list-header">
+        <h2>Student List</h2>
+        <button onClick={() => navigate('/')} className="add-button">Add Student</button>
+        <button onClick={generateCSV} className="csv-button">Download CSV</button> {/* Add CSV download button */}
+      </div>
 
       <div className="top-controls">
         <input
