@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom'; // Change BrowserRouter to HashRouter
+import { HashRouter, Routes, Route } from 'react-router-dom'; // Here Changed BrowserRouter to HashRouter
 import StudentForm from './components/StudentForm';
 import StudentList from './components/StudentList';
 import './styles.css';

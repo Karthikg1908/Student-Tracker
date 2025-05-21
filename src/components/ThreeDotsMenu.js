@@ -1,43 +1,49 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const ThreeDotsMenu = ({ onEdit, onDelete, onSave, isEditing }) => {
-  const [open, setOpen] = useState(false);
-  const menuRef = useRef();
+const ThreeDotsMenu = ({
+  onEdit,
+  onDelete,
+  onSave,
+  onCancel,
+  isEditing,
+  onMarkImportant,
+  important
+}) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setOpen(false);
+        setMenuOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  // Function to handle delete confirmation
-  const handleDelete = () => {
-    const confirmation = window.confirm('Are you sure you want to delete this item?');
-    if (confirmation) {
-      onDelete();
-      setOpen(false);
-    }
-  };
 
   return (
     <div className="dots-menu-wrapper" ref={menuRef}>
-      <div className="dots-menu" onClick={() => setOpen(prev => !prev)}>
+      <button className="dots-menu" onClick={() => setMenuOpen(!menuOpen)} title="Options">
         ⋮
-      </div>
-      {open && (
+      </button>
+
+      {menuOpen && (
         <div className="menu">
-          {isEditing ? (
-            <button onClick={() => { onSave(); setOpen(false); }}>Save</button>
+          {!isEditing ? (
+            <>
+              <button onClick={() => { onEdit(); setMenuOpen(false); }}>Edit</button>
+              <button onClick={() => { onDelete(); setMenuOpen(false); }}>Delete</button>
+              <button onClick={() => { onMarkImportant(); setMenuOpen(false); }}>
+                {important ? 'Clear' : 'Highlight'}
+              </button>
+            </>
           ) : (
-            <button onClick={() => { onEdit(); setOpen(false); }}>Edit</button>
+            <>
+              <button onClick={() => { onSave(); setMenuOpen(false); }}>Save</button>
+              <button onClick={() => { onCancel(); setMenuOpen(false); }}>Cancel</button>
+            </>
           )}
-          <button onClick={handleDelete}>Delete</button>
         </div>
       )}
     </div>

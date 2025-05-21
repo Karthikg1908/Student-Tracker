@@ -22,8 +22,12 @@ const StudentList = () => {
 
     if (sortOption === 'name') {
       result.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortOption === 'name-desc') {
+      result.sort((a, b) => b.name.localeCompare(a.name));
     } else if (sortOption === 'marks') {
       result.sort((a, b) => b.total - a.total);
+    } else if (sortOption === 'marks-asc') {
+      result.sort((a, b) => a.total - b.total);
     }
 
     return result;
@@ -33,6 +37,7 @@ const StudentList = () => {
     const filtered = students.filter(s => s.id !== id);
     setStudents(filtered);
     localStorage.setItem('students', JSON.stringify(filtered));
+    setSelected(prev => prev.filter(sid => sid !== id));
   };
 
   const handleEdit = (id, updatedData) => {
@@ -55,19 +60,23 @@ const StudentList = () => {
   };
 
   const handleSelectAll = (e) => {
-    setSelected(e.target.checked ? students.map(s => s.id) : []);
+    if (e.target.checked) {
+      setSelected(filteredStudents.map(s => s.id));
+    } else {
+      setSelected([]);
+    }
   };
 
   const generateCSV = () => {
     const header = ['Name', 'Roll', 'Subject 1', 'Subject 2', 'Subject 3', 'Total', 'Average', 'Grade'];
     const rows = filteredStudents.map(student => [
-      student.name,
-      student.roll,
+      `"${student.name}"`,
+      `"${student.roll}"`,
       student.subject1,
       student.subject2,
       student.subject3,
       student.total,
-      student.avg,
+      student.avg.toFixed(2),
       student.grade
     ]);
 
@@ -82,7 +91,10 @@ const StudentList = () => {
       const url = URL.createObjectURL(blob);
       link.setAttribute('href', url);
       link.setAttribute('download', 'students.csv');
+      document.body.appendChild(link);
       link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
     }
   };
 
@@ -91,7 +103,7 @@ const StudentList = () => {
       <div className="list-header">
         <h2>Student List</h2>
         <button onClick={() => navigate('/')} className="add-button">Add Student</button>
-        <button onClick={generateCSV} className="csv-button">Download CSV</button>
+        <button onClick={generateCSV} className="csv-button" disabled={!filteredStudents.length}>Download CSV</button>
       </div>
 
       <div className="top-controls">
@@ -107,7 +119,9 @@ const StudentList = () => {
           <select value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
             <option value="">None</option>
             <option value="name">Name (A-Z)</option>
+            <option value="name-desc">Name (Z-A)</option>
             <option value="marks">Marks (High to Low)</option>
+            <option value="marks-asc">Marks (Low to High)</option>
           </select>
         </div>
 
@@ -121,7 +135,8 @@ const StudentList = () => {
               <input
                 type="checkbox"
                 onChange={handleSelectAll}
-                checked={selected.length === students.length && students.length > 0}
+                checked={selected.length > 0 && selected.length === filteredStudents.length}
+                indeterminate={selected.length > 0 && selected.length < filteredStudents.length ? 'true' : undefined}
               />
             </th>
             <th>Name</th><th>Roll</th><th>Subjects</th>
@@ -129,16 +144,20 @@ const StudentList = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredStudents.map(student => (
-            <StudentRow
-              key={student.id}
-              student={student}
-              selected={selected.includes(student.id)}
-              onCheck={handleCheck}
-              onDelete={handleDelete}
-              onEdit={handleEdit}
-            />
-          ))}
+          {filteredStudents.length === 0 ? (
+            <tr><td colSpan="8" style={{ textAlign: 'center' }}>No students found.</td></tr>
+          ) : (
+            filteredStudents.map(student => (
+              <StudentRow
+                key={student.id}
+                student={student}
+                selected={selected.includes(student.id)}
+                onCheck={handleCheck}
+                onDelete={handleDelete}
+                onEdit={handleEdit}
+              />
+            ))
+          )}
         </tbody>
       </table>
     </div>

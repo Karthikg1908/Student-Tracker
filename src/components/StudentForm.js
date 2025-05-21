@@ -21,19 +21,19 @@ const StudentForm = () => {
     const total = s1 + s2 + s3;
     const avg = total / 3;
     let grade = 'Fail';
-    if (avg >= 85) grade = 'A';
-    else if (avg >= 70) grade = 'B';
-    else if (avg >= 50) grade = 'C';
+    if (avg >= 75) grade = 'A';
+    else if (avg >= 60) grade = 'B';
+    else if (avg >= 35) grade = 'C';
     return { total, avg, grade };
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const { subject1, subject2, subject3 } = formData;
-    const s1 = +subject1, s2 = +subject2, s3 = +subject3;
+    const s1 = Number(subject1), s2 = Number(subject2), s3 = Number(subject3);
 
-    if ([s1, s2, s3].some(score => score < 0 || score > 100)) {
-      alert("❌ Marks should be between 0 and 100");
+    if ([s1, s2, s3].some(score => score < 0 || score > 100 || isNaN(score))) {
+      alert("❌ Marks should be numbers between 0 and 100");
       return;
     }
 
@@ -41,10 +41,16 @@ const StudentForm = () => {
 
     const newStudent = {
       ...formData,
+      subject1: s1,
+      subject2: s2,
+      subject3: s3,
       id: Date.now(),
       total,
       avg,
-      grade
+      grade,
+      tags: [],
+      pinned: false,
+      important: false,
     };
 
     const stored = JSON.parse(localStorage.getItem('students')) || [];
@@ -73,9 +79,11 @@ const StudentForm = () => {
 
   return (
     <div className="form-container">
-      <h2>Student Data</h2>
+      <h2>Student Record Submission</h2>
 
       <form className="form" onSubmit={handleSubmit}>
+        <h3 style={{ textAlign: 'center', fontSize: '26px' }}> Enter the Students Details </h3>
+
         {Object.keys(formData).map((field) => (
           <div key={field} className="form-group">
             <label htmlFor={field}>{labels[field]}</label>
